@@ -1,9 +1,7 @@
 // Components/navbar/Navbar.jsx
-import React, { useContext, useEffect, useState } from "react"; // Removed 'createContext' from here
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
-// IMPORTANT: Ensure this is the ONLY definition of UserProfileContext
-import { UserProfileContext } from "../../contexts/userContext"; // Correct import path for the context
+import { UserProfileContext } from "../../contexts/userContext";
 
 // Mocking react-redux (keep this if you're still mocking Redux, otherwise remove)
 const useSelector = (selector) => {
@@ -18,8 +16,6 @@ const Navbar = () => {
   const location = useLocation();
   const items = useSelector((state) => state.cart.items);
 
-  // Directly destructure from useContext - this will now work correctly
-  // because the Provider is a parent and the context is imported correctly.
   const { userProfile, setUserProfile } = useContext(UserProfileContext);
 
   const [showProfile, setShowProfile] = useState(false);
@@ -29,9 +25,19 @@ const Navbar = () => {
     // This effect should ideally only run if userProfile from context is null
     // or if a stored user exists that needs to be loaded into context.
     const storedUser = JSON.parse(localStorage.getItem("userProfile"));
-    if (storedUser && !userProfile) {
-      // Only set if stored and not already in context
+    if (storedUser && (!userProfile || userProfile.role === "guest")) {
+      // Only set if stored and not already in context, or if current is guest
       setUserProfile(storedUser);
+    } else if (!storedUser && userProfile && userProfile.role !== "guest") {
+      // If no stored user, but a non-guest user in context (e.g. after logout in another tab)
+      // This case might need careful handling depending on your app's behavior
+      // For now, let's reset to guest if localStorage is truly empty
+      setUserProfile({
+        name: "Guest User",
+        email: "guest@example.com",
+        photoURL: "",
+        role: "guest",
+      });
     } else if (!storedUser && !userProfile) {
       // If nothing stored and nothing in context, set guest
       setUserProfile({
@@ -41,7 +47,7 @@ const Navbar = () => {
         role: "guest",
       });
     }
-  }, [userProfile, setUserProfile]);
+  }, [userProfile, setUserProfile]); // Added userProfile to dependency array for re-evaluation
 
   const toggleProfile = () => {
     setShowProfile(!showProfile);
@@ -55,13 +61,20 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("userProfile");
-    setUserProfile(null);
-    navigate("/login");
+    localStorage.removeItem("adminToken"); // Clear admin token too if it was set
+    setUserProfile({
+      // Explicitly set to guest after logout
+      name: "Guest User",
+      email: "guest@example.com",
+      photoURL: "",
+      role: "guest",
+    });
+    navigate("/login"); // Redirect to generic login page
     setShowProfile(false);
   };
 
   return (
-    <nav className="bg-[#fef5ee] shadow-md p-4 sticky top-0 z-40">
+    <nav className="bg-white shadow-md p-4 sticky top-0 z-40">
       <div className="container mx-auto flex justify-between items-center flex-wrap">
         {/* Hamburger Menu Icon (Mobile Only) */}
         <button
@@ -257,7 +270,7 @@ const Navbar = () => {
                 </li>
               </>
             )}
-            {/* Login/Logout for Mobile */}
+            {/* Conditional rendering for Login/Logout for Mobile */}
             {userProfile && userProfile.role !== "guest" ? (
               <>
                 <li>
@@ -278,6 +291,18 @@ const Navbar = () => {
                     Account Settings
                   </Link>
                 </li>
+                {userProfile.role === "admin" ||
+                userProfile.role === "superadmin" ? (
+                  <li>
+                    <Link
+                      to="/admin/dashboard"
+                      className="text-purple-600 hover:underline transition duration-200"
+                      onClick={toggleMobileMenu}
+                    >
+                      Admin Dashboard
+                    </Link>
+                  </li>
+                ) : null}
                 <li>
                   <button
                     onClick={() => {
@@ -291,6 +316,7 @@ const Navbar = () => {
                 </li>
               </>
             ) : (
+              // Show these if userProfile is guest or null
               <>
                 <li>
                   <Link
@@ -385,7 +411,8 @@ const Navbar = () => {
                 >
                   Account Settings
                 </Link>
-                {userProfile.role === "admin" && (
+                {(userProfile.role === "admin" ||
+                  userProfile.role === "superadmin") && (
                   <Link
                     to="/admin/dashboard"
                     className="text-purple-600 hover:underline mb-2"

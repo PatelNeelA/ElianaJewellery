@@ -2,8 +2,10 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const path = require("path"); // Import path module
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
+const collectionRoutes = require("./routes/collectionRoutes"); // Import collection routes
 
 // Load environment variables
 dotenv.config();
@@ -17,8 +19,12 @@ const app = express();
 app.use(cors()); // Allow cross-origin requests
 app.use(express.json()); // Body parser for JSON data
 
+// Serve static uploaded files (e.g., collection images)
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/collections", collectionRoutes); // Add collection routes
 
 // Basic route for testing
 app.get("/", (req, res) => {
