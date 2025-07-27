@@ -1,11 +1,12 @@
-// server.js
+// server.js (UPDATED)
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const path = require("path"); // Import path module
+const path = require("path");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
-const collectionRoutes = require("./routes/collectionRoutes"); // Import collection routes
+const collectionRoutes = require("./routes/collectionRoutes");
+const productRoutes = require("./routes/productRoutes"); // Import product routes
 
 // Load environment variables
 dotenv.config();
@@ -16,22 +17,25 @@ connectDB();
 const app = express();
 
 // Middleware
-app.use(cors()); // Allow cross-origin requests
-app.use(express.json()); // Body parser for JSON data
+app.use(cors());
+app.use(express.json());
 
-// Serve static uploaded files (e.g., collection images)
+// Serve static uploaded files (e.g., collection images, product images)
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// Ensure the /uploads/products directory is accessible
+// The /uploads path will handle both /uploads/collections and /uploads/products
 
 // Routes
 app.use("/api/auth", authRoutes);
-app.use("/api/collections", collectionRoutes); // Add collection routes
+app.use("/api/collections", collectionRoutes);
+app.use("/api/products", productRoutes); // Add product routes
 
 // Basic route for testing
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-// Error handling middleware (optional, but good practice)
+// Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something broke!");

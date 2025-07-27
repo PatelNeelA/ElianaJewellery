@@ -1,4 +1,4 @@
-// components/Home/Collection.jsx (Modified for Responsiveness)
+// components/Home/Collection.jsx (Modified for Responsive Tight Centering)
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import collectionService from "../../Service/collectionService"; // Adjust path as needed
@@ -44,19 +44,26 @@ const Collection = () => {
 
   return (
     <div id="collection" className="w-full mt-20 px-4 sm:px-6 lg:px-8">
-      {" "}
-      {/* Adjusted mt-28 to mt-20 for better spacing */}
       <h1 className="text-4xl sm:text-5xl lg:text-6xl text-[#13524a] font-normal text-center font-moglan mb-12">
-        {" "}
-        {/* Added mb-12 for spacing */}
         Collections
       </h1>
-      {/* Grid container for collections */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 xl:gap-8 justify-items-center mt-8">
+
+      {/*
+        Main container for collections grid:
+        - `grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5`: Defines column structure for different screen sizes.
+        - `gap-y-8 gap-x-6`: Adjusted gaps. `gap-y` for vertical, `gap-x` for horizontal.
+                            `gap-10` was a bit too large, `gap-6` is more common,
+                            but let's try `gap-y-8` for vertical spacing and `gap-x-6` for horizontal to see if it matches.
+                            You might even try smaller gaps like `gap-x-4` if the image implies tighter horizontal spacing.
+        - `justify-items-center`: Centers individual items within their grid cells.
+        - `max-w-screen-xl mx-auto`: Centers the entire grid block horizontally and limits its max width.
+        - `md:max-w-screen-lg` or `lg:max-w-screen-lg`: (Optional, commented out) If you find the grid still stretches too wide on tablets/laptops before hitting the `lg:grid-cols-5`, you could explicitly set a smaller `max-w` for `md` or `lg` to keep it tighter, but let's test without it first.
+      */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-y-8 gap-x-6 justify-items-center max-w-screen-xl mx-auto">
         {collections.slice(0, visibleCollectionsCount).map((collection) => (
           <div
             key={collection._id}
-            className="w-full max-w-[300px] h-[313px] bg-[#13524a] rounded-xl relative overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
+            className="w-full max-w-[280px] h-[313px] bg-[#13524a] rounded-xl relative overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 group"
           >
             <Link
               to={`/collection/${collection.name}`}
@@ -67,18 +74,15 @@ const Collection = () => {
                 src={`http://localhost:5000${collection.imageUrl}`}
                 alt={collection.name}
               />
-              <div className="group">
-                {/* Overlay for hover effect */}
-                <div className="absolute bottom-0 left-0 w-full h-[100px] bg-[#13524a] rounded-b-xl opacity-30 group-hover:h-full group-hover:top-0 group-hover:rounded-t-lg transition-all duration-300 ease-in-out"></div>
-                {/* Collection Name */}
-                <h1 className="absolute text-[30px] sm:text-[35px] lg:text-[35px] bottom-8 left-1/2 -translate-x-1/2 text-white group-hover:bottom-1/2 group-hover:translate-y-1/2 transition-all duration-300 ease-in-out font-moglan whitespace-nowrap">
-                  {collection.name.toUpperCase()}
-                </h1>
-              </div>
+              <div className="absolute bottom-0 left-0 w-full h-[100px] bg-[#13524a] rounded-b-xl opacity-30 group-hover:h-full group-hover:top-0 group-hover:rounded-t-lg transition-all duration-300 ease-in-out"></div>
+              <h1 className="absolute text-[30px] sm:text-[32px] lg:text-[35px] bottom-8 left-1/2 -translate-x-1/2 text-white group-hover:bottom-1/2 group-hover:translate-y-1/2 transition-all duration-300 ease-in-out font-moglan whitespace-nowrap">
+                {collection.name.toUpperCase()}
+              </h1>
             </Link>
           </div>
         ))}
       </div>
+
       {collections.length > 5 && (
         <div className="flex justify-center mt-12">
           <button

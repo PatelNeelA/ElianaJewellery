@@ -24,7 +24,7 @@ const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
   fileFilter: function (req, file, cb) {
-    const filetypes = /jpeg|jpg|png|gif/;
+    const filetypes = /jpeg|jpg|png|gif|webp/;
     const mimetype = filetypes.test(file.mimetype);
     const extname = filetypes.test(
       path.extname(file.originalname).toLowerCase()
@@ -138,12 +138,10 @@ exports.updateCollection = (req, res) => {
         { new: true, runValidators: true } // Return the updated doc and run schema validators
       );
 
-      res
-        .status(200)
-        .json({
-          message: "Collection updated successfully",
-          collection: updatedCollection,
-        });
+      res.status(200).json({
+        message: "Collection updated successfully",
+        collection: updatedCollection,
+      });
     } catch (error) {
       if (req.file) fs.unlinkSync(req.file.path); // Clean up if error occurs
       if (error.code === 11000) {

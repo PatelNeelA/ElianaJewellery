@@ -7,6 +7,7 @@ const FavoritesList = () => {
   const dispatch = useDispatch();
 
   const handleRemoveFromFavorites = (itemId) => {
+    // Changed itemId from item.id to item._id
     dispatch(removeFromFavorites(itemId));
   };
 
@@ -29,13 +30,13 @@ const FavoritesList = () => {
         ) : (
           favorites.map((favorite) => (
             <div
-              key={favorite.id}
+              key={favorite._id} // Changed key from favorite.id to favorite._id
               className="w-full max-w-sm bg-[#13524a] rounded-xl shadow-lg overflow-hidden card-hover"
             >
               <div className="w-full h-48 sm:h-56 md:h-64 lg:h-72">
                 <img
                   className="object-cover w-full h-full"
-                  src={favorite.image}
+                  src={`http://localhost:5000${favorite.imageUrl}`} // Changed src from favorite.image to favorite.imageUrl and added base URL
                   alt={favorite.name}
                 />
               </div>
@@ -49,7 +50,7 @@ const FavoritesList = () => {
                   </span>
                   <i
                     className="fa-regular fa-heart text-red-500 text-lg cursor-pointer hover:scale-110 transition-transform"
-                    onClick={() => handleRemoveFromFavorites(favorite.id)}
+                    onClick={() => handleRemoveFromFavorites(favorite._id)} // Changed favorite.id to favorite._id
                     title="Remove from wishlist"
                   ></i>
                 </div>

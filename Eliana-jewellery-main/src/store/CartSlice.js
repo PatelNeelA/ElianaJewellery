@@ -8,19 +8,24 @@ const cartSlice = createSlice({
   },
   reducers: {
     add(state, action) {
-      state.items.push(action.payload);
+      // Ensure the added item has a quantity property for cart operations
+      const newItem = { ...action.payload, quantity: 1 };
+      state.items.push(newItem);
     },
     remove(state, action) {
-      state.items = state.items.filter((item) => item.id !== action.payload);
+      // Use item._id for filtering
+      state.items = state.items.filter((item) => item._id !== action.payload);
     },
     increment(state, action) {
-      const item = state.items.find((item) => item.id === action.payload);
+      // Use item._id to find the item
+      const item = state.items.find((item) => item._id === action.payload);
       if (item) {
         item.quantity += 1;
       }
     },
     decrement(state, action) {
-      const item = state.items.find((item) => item.id === action.payload);
+      // Use item._id to find the item
+      const item = state.items.find((item) => item._id === action.payload);
       if (item && item.quantity > 1) {
         item.quantity -= 1;
       }
@@ -29,8 +34,9 @@ const cartSlice = createSlice({
       state.favorites.push(action.payload);
     },
     removeFromFavorites(state, action) {
+      // Use item._id for filtering
       state.favorites = state.favorites.filter(
-        (item) => item.id !== action.payload
+        (item) => item._id !== action.payload
       );
     },
   },

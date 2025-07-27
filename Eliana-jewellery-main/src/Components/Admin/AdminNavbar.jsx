@@ -76,9 +76,9 @@ const AdminNavbar = () => {
           <li>
             <Link
               className="hover:text-indigo-600 transition duration-200"
-              to="/admin/orders"
+              to="/admin/products"
             >
-              Manage Orders
+              Manage Product
             </Link>
           </li>
         </ul>

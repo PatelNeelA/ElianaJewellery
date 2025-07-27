@@ -1,4 +1,4 @@
-// main.jsx
+// main.jsx (UPDATED)
 import React, { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./routes/App.jsx";
@@ -20,10 +20,12 @@ import Login from "./Components/Login/Login.jsx";
 import Register from "./Components/Register/Register.jsx";
 import AdminLogin from "./Components/Admin/AdminLogin.jsx";
 import AdminDashboard from "./Components/Admin/AdminDashboard.jsx";
-import AdminLayout from "./routes/AdminLayout.jsx"; // Import the new AdminLayout
+import AdminLayout from "./routes/AdminLayout.jsx";
 
 import ManageCollection from "./Components/Admin/ManageCollection.jsx";
 import ManageBlog from "./Components/Admin/ManageBlog.jsx";
+import ManageProduct from "./Components/Admin/ManageProduct.jsx"; // Import the new component
+import ManageOrder from "./Components/Admin/ManageOrder.jsx";
 
 const router = createBrowserRouter([
   {
@@ -39,11 +41,11 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "collection/:collectionType",
+        path: "collection/:collectionType", // This route will now display products belonging to a collection
         element: <CardDetails />,
       },
       {
-        path: "collection/:collectionType/:id",
+        path: "product/:id", // Changed from collection/:collectionType/:id to a more direct product route
         element: <ProductDescription />,
       },
       {
@@ -69,26 +71,33 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/admin", // Parent path for all admin routes
-    element: <AdminLayout />, // Use the AdminLayout for these routes
+    path: "/admin",
+    element: <AdminLayout />,
     children: [
       {
         index: true,
-        element: <Navigate to="dashboard" />, // Redirect /admin to /admin/dashboard
+        element: <Navigate to="dashboard" />,
       },
       {
         path: "dashboard",
         element: <AdminDashboard />,
       },
       {
-        path: "collection", // Example admin route for managing users
+        path: "collection", // Changed to plural for consistency
         element: <ManageCollection />,
       },
       {
-        path: "Blog", // Example admin route for managing products
+        path: "products", // New route for managing products
+        element: <ManageProduct />,
+      },
+      {
+        path: "blog", // Changed to plural for consistency
         element: <ManageBlog />,
       },
-      // ... more admin-specific routes
+      {
+        path: "Orders", // Changed to plural for consistency
+        element: <ManageOrder />,
+      },
     ],
   },
 ]);
@@ -97,8 +106,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
       <UserProfileProvider>
-        {" "}
-        {/* This is crucial: UserProfileProvider wraps RouterProvider */}
         <RouterProvider router={router} />
       </UserProfileProvider>
     </Provider>

@@ -17,6 +17,7 @@ const Cart = () => {
   const productItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
 
+  // Use item._id for all dispatch actions
   const removeCartItem = (itemId) => dispatch(remove(itemId));
   const incrementQuantity = (itemId) => dispatch(increment(itemId));
   const decrementQuantity = (itemId) => dispatch(decrement(itemId));
@@ -45,6 +46,22 @@ const Cart = () => {
     const errors = validateForm(formData);
     setFormErrors(errors);
     setSubmitted(Object.keys(errors).length === 0);
+    // TODO: Add logic here to send order details to your backend
+    // You'll likely need an order service to handle this.
+    // For example:
+    // if (Object.keys(errors).length === 0) {
+    //   try {
+    //     await orderService.placeOrder({ ...formData, items: productItems, totalPrice });
+    //     // Clear cart after successful order
+    //     dispatch(clearCart()); // You'll need to define a clearCart action in your CartSlice
+    //     toast.success("Order placed successfully!", { position: "top-right" });
+    //     setSubmitted(true);
+    //     setShowModal(false);
+    //   } catch (error) {
+    //     console.error("Error placing order:", error);
+    //     toast.error("Failed to place order. Please try again.", { position: "top-right" });
+    //   }
+    // }
   };
 
   const validateForm = (data) => {
@@ -75,12 +92,12 @@ const Cart = () => {
         <>
           {productItems.map((item) => (
             <div
-              key={item.id}
+              key={item._id}
               className="mb-4 p-4 border rounded-lg flex flex-col sm:flex-row items-center justify-between gap-4"
             >
               <div className="flex items-center w-full sm:w-2/3">
                 <img
-                  src={item.image}
+                  src={`http://localhost:5000${item.imageUrl}`}
                   alt={item.name}
                   className="w-16 h-16 sm:w-20 sm:h-20 rounded-md object-cover mr-4"
                 />
@@ -95,21 +112,21 @@ const Cart = () => {
               <div className="flex flex-col sm:flex-row items-center gap-2">
                 <div className="flex items-center">
                   <button
-                    onClick={() => decrementQuantity(item.id)}
+                    onClick={() => decrementQuantity(item._id)}
                     className="bg-gray-200 hover:bg-gray-300 text-gray-600 font-semibold px-3 py-1 rounded-l"
                   >
                     -
                   </button>
                   <span className="bg-gray-200 px-3 py-1">{item.quantity}</span>
                   <button
-                    onClick={() => incrementQuantity(item.id)}
+                    onClick={() => incrementQuantity(item._id)}
                     className="bg-gray-200 hover:bg-gray-300 text-gray-600 font-semibold px-3 py-1 rounded-r"
                   >
                     +
                   </button>
                 </div>
                 <button
-                  onClick={() => removeCartItem(item.id)}
+                  onClick={() => removeCartItem(item._id)}
                   className="text-red-500 hover:text-red-700 font-semibold"
                 >
                   Remove
