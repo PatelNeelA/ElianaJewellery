@@ -1,19 +1,24 @@
-// components/Home/Collection.jsx (Modified for Responsive Tight Centering)
+// components/Home/Collection.jsx (MODIFIED - Exclude isTrending collections)
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import collectionService from "../../Service/collectionService"; // Adjust path as needed
+import collectionService from "../../Service/collectionService";
 
 const Collection = () => {
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [visibleCollectionsCount, setVisibleCollectionsCount] = useState(5); // Show initial 5
+  const [visibleCollectionsCount, setVisibleCollectionsCount] = useState(5);
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const fetchCollections = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const data = await collectionService.getCollections();
+        // Fetch only collections NOT marked as trending
+        const data = await collectionService.getCollections({
+          excludeTrending: true,
+        });
         setCollections(data);
       } catch (err) {
         setError("Failed to load collections.");
@@ -48,17 +53,6 @@ const Collection = () => {
         Collections
       </h1>
 
-      {/*
-        Main container for collections grid:
-        - `grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5`: Defines column structure for different screen sizes.
-        - `gap-y-8 gap-x-6`: Adjusted gaps. `gap-y` for vertical, `gap-x` for horizontal.
-                            `gap-10` was a bit too large, `gap-6` is more common,
-                            but let's try `gap-y-8` for vertical spacing and `gap-x-6` for horizontal to see if it matches.
-                            You might even try smaller gaps like `gap-x-4` if the image implies tighter horizontal spacing.
-        - `justify-items-center`: Centers individual items within their grid cells.
-        - `max-w-screen-xl mx-auto`: Centers the entire grid block horizontally and limits its max width.
-        - `md:max-w-screen-lg` or `lg:max-w-screen-lg`: (Optional, commented out) If you find the grid still stretches too wide on tablets/laptops before hitting the `lg:grid-cols-5`, you could explicitly set a smaller `max-w` for `md` or `lg` to keep it tighter, but let's test without it first.
-      */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-y-8 gap-x-6 justify-items-center max-w-screen-xl mx-auto">
         {collections.slice(0, visibleCollectionsCount).map((collection) => (
           <div

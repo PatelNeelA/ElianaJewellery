@@ -1,4 +1,4 @@
-// models/Product.js
+// models/Product.js (REVERTED - Removed isTrending field)
 const mongoose = require("mongoose");
 
 const productSchema = new mongoose.Schema({
@@ -18,7 +18,7 @@ const productSchema = new mongoose.Schema({
   },
   gender: {
     type: String,
-    enum: ["Male", "Female", "Unisex", "Kids"], // Example categories
+    enum: ["Male", "Female", "Unisex", "Kids"],
     required: true,
   },
   occasion: {

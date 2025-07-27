@@ -1,11 +1,11 @@
-// components/Admin/ManageProduct.jsx
+// components/Admin/ManageProduct.jsx (MODIFIED - "Select Collection" dropdown now shows ALL collections)
 import React, { useState, useEffect } from "react";
 import productService from "../../Service/productService";
-import collectionService from "../../Service/collectionService"; // To fetch collections for dropdown
+import collectionService from "../../Service/collectionService";
 
 const ManageProduct = () => {
   const [products, setProducts] = useState([]);
-  const [collections, setCollections] = useState([]); // State for collections
+  const [collections, setCollections] = useState([]); // Will hold ALL collections
   const [productName, setProductName] = useState("");
   const [productDetails, setProductDetails] = useState("");
   const [price, setPrice] = useState("");
@@ -13,17 +13,16 @@ const ManageProduct = () => {
   const [occasion, setOccasion] = useState("");
   const [materialColor, setMaterialColor] = useState("");
   const [productImage, setProductImage] = useState(null);
-  const [selectedCollection, setSelectedCollection] = useState(""); // State for selected collection ID
+  const [selectedCollection, setSelectedCollection] = useState("");
 
   const [editingProduct, setEditingProduct] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  // Fetch products and collections on component mount
   useEffect(() => {
     fetchProducts();
-    fetchCollections();
+    fetchCollections(); // This will now fetch ALL collections
   }, []);
 
   const fetchProducts = async () => {
@@ -42,7 +41,8 @@ const ManageProduct = () => {
 
   const fetchCollections = async () => {
     try {
-      const data = await collectionService.getCollections();
+      // MODIFIED: Fetch ALL collections, do not exclude trending ones
+      const data = await collectionService.getCollections({}); // Pass an empty object to get all
       setCollections(data);
     } catch (err) {
       console.error("Error fetching collections for dropdown:", err);
@@ -59,7 +59,6 @@ const ManageProduct = () => {
     setError(null);
     setSuccess(null);
 
-    // Basic validation
     if (
       !productName ||
       !productDetails ||
@@ -68,7 +67,7 @@ const ManageProduct = () => {
       !occasion ||
       !materialColor ||
       !selectedCollection ||
-      (!productImage && !editingProduct) // Image required for new product
+      (!productImage && !editingProduct)
     ) {
       setError(
         "Please fill in all product fields and select an image (for new products)."
@@ -84,26 +83,23 @@ const ManageProduct = () => {
     formData.append("gender", gender);
     formData.append("occasion", occasion);
     formData.append("materialColor", materialColor);
-    formData.append("collection", selectedCollection); // Append the collection ID
+    formData.append("collection", selectedCollection);
 
     if (productImage) {
-      formData.append("productImage", productImage); // 'productImage' must match backend multer field name
+      formData.append("productImage", productImage);
     }
 
     try {
       if (editingProduct) {
-        // Update existing product
         const result = await productService.updateProduct(
           editingProduct._id,
           formData
         );
         setSuccess(result.message);
       } else {
-        // Create new product
         const result = await productService.createProduct(formData);
         setSuccess(result.message);
       }
-      // Clear form
       setProductName("");
       setProductDetails("");
       setPrice("");
@@ -113,8 +109,8 @@ const ManageProduct = () => {
       setProductImage(null);
       setSelectedCollection("");
       setEditingProduct(null);
-      e.target.reset(); // Reset file input
-      fetchProducts(); // Refresh the list
+      e.target.reset();
+      fetchProducts();
     } catch (err) {
       setError(err.response?.data?.message || "An error occurred.");
       console.error("Error submitting product:", err);
@@ -131,8 +127,8 @@ const ManageProduct = () => {
     setGender(product.gender);
     setOccasion(product.occasion);
     setMaterialColor(product.materialColor);
-    setProductImage(null); // Clear image input when editing, user can re-upload
-    setSelectedCollection(product.collection._id || product.collection); // Set current collection
+    setProductImage(null);
+    setSelectedCollection(product.collection?._id || "");
     setError(null);
     setSuccess(null);
   };
@@ -145,7 +141,7 @@ const ManageProduct = () => {
       try {
         const result = await productService.deleteProduct(id);
         setSuccess(result.message);
-        fetchProducts(); // Refresh the list
+        fetchProducts();
       } catch (err) {
         setError(err.response?.data?.message || "Failed to delete product.");
         console.error("Error deleting product:", err);
@@ -184,6 +180,7 @@ const ManageProduct = () => {
         </h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="mb-4">
             <label
@@ -219,7 +216,8 @@ const ManageProduct = () => {
               <option value="">-- Select a Collection --</option>
               {collections.map((col) => (
                 <option key={col._id} value={col._id}>
-                  {col.name}
+                  {col.name} {col.isTrending ? "(Trending)" : ""}{" "}
+                  {/* Added "(Trending)" label */}
                 </option>
               ))}
             </select>
@@ -276,6 +274,8 @@ const ManageProduct = () => {
               <option value="">-- Select Gender --</option>
               <option value="Male">Men</option>
               <option value="Female">Women</option>
+              <option value="Unisex">Unisex</option>
+              <option value="Kids">Kids</option>
             </select>
           </div>
 
@@ -344,8 +344,7 @@ const ManageProduct = () => {
               </p>
             )}
           </div>
-        </div>{" "}
-        {/* End of grid */}
+        </div>
         <div className="flex items-center justify-between mt-6">
           <button
             type="submit"

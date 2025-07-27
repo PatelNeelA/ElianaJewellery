@@ -1,12 +1,14 @@
-// components/Admin/ManageCollection.jsx
+// components/Admin/ManageCollection.jsx (MODIFIED)
 import React, { useState, useEffect } from "react";
-import collectionService from "../../Service/collectionService"; // Adjust path as needed
+import collectionService from "../../Service/collectionService";
 
 const ManageCollection = () => {
   const [collections, setCollections] = useState([]);
   const [collectionName, setCollectionName] = useState("");
   const [collectionImage, setCollectionImage] = useState(null);
-  const [editingCollection, setEditingCollection] = useState(null); // State to hold collection being edited
+  const [isTrending, setIsTrending] = useState(false); // NEW STATE for isTrending
+
+  const [editingCollection, setEditingCollection] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -19,7 +21,7 @@ const ManageCollection = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await collectionService.getCollections();
+      const data = await collectionService.getCollections(); // Fetches all collections
       setCollections(data);
     } catch (err) {
       setError("Failed to fetch collections.");
@@ -49,28 +51,29 @@ const ManageCollection = () => {
 
     const formData = new FormData();
     formData.append("name", collectionName);
+    formData.append("isTrending", isTrending); // Append isTrending
     if (collectionImage) {
-      formData.append("collectionImage", collectionImage); // 'collectionImage' must match backend multer field name
+      formData.append("collectionImage", collectionImage);
     }
 
     try {
       if (editingCollection) {
-        // Update existing collection
         const result = await collectionService.updateCollection(
           editingCollection._id,
           formData
         );
         setSuccess(result.message);
       } else {
-        // Create new collection
         const result = await collectionService.createCollection(formData);
         setSuccess(result.message);
       }
+      // Clear form
       setCollectionName("");
       setCollectionImage(null);
-      setEditingCollection(null); // Clear editing state
-      e.target.reset(); // Reset file input
-      fetchCollections(); // Refresh the list
+      setIsTrending(false); // Reset
+      setEditingCollection(null);
+      e.target.reset();
+      fetchCollections();
     } catch (err) {
       setError(err.response?.data?.message || "An error occurred.");
       console.error("Error submitting collection:", err);
@@ -82,7 +85,8 @@ const ManageCollection = () => {
   const handleEdit = (collection) => {
     setEditingCollection(collection);
     setCollectionName(collection.name);
-    setCollectionImage(null); // Clear image input when editing, user can re-upload
+    setCollectionImage(null);
+    setIsTrending(collection.isTrending || false); // Set for edit
     setError(null);
     setSuccess(null);
   };
@@ -95,7 +99,7 @@ const ManageCollection = () => {
       try {
         const result = await collectionService.deleteCollection(id);
         setSuccess(result.message);
-        fetchCollections(); // Refresh the list
+        fetchCollections();
       } catch (err) {
         setError(err.response?.data?.message || "Failed to delete collection.");
         console.error("Error deleting collection:", err);
@@ -103,6 +107,15 @@ const ManageCollection = () => {
         setLoading(false);
       }
     }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingCollection(null);
+    setCollectionName("");
+    setCollectionImage(null);
+    setIsTrending(false);
+    setError(null);
+    setSuccess(null);
   };
 
   return (
@@ -151,7 +164,7 @@ const ManageCollection = () => {
             className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
             onChange={handleFileChange}
             accept="image/*"
-            required={!editingCollection} // Required only if not editing
+            required={!editingCollection}
           />
           {editingCollection && editingCollection.imageUrl && (
             <p className="text-sm text-gray-600 mt-2">
@@ -170,6 +183,23 @@ const ManageCollection = () => {
           )}
         </div>
 
+        {/* NEW: Is Trending Checkbox */}
+        <div className="mb-4">
+          <label
+            htmlFor="isTrending"
+            className="flex items-center text-gray-700 text-sm font-bold mb-2"
+          >
+            <input
+              type="checkbox"
+              id="isTrending"
+              className="form-checkbox h-5 w-5 text-green-600 mr-2"
+              checked={isTrending}
+              onChange={(e) => setIsTrending(e.target.checked)}
+            />
+            Show in Trending Pieces on Homepage
+          </label>
+        </div>
+
         <div className="flex items-center justify-between">
           <button
             type="submit"
@@ -185,13 +215,7 @@ const ManageCollection = () => {
           {editingCollection && (
             <button
               type="button"
-              onClick={() => {
-                setEditingCollection(null);
-                setCollectionName("");
-                setCollectionImage(null);
-                setError(null);
-                setSuccess(null);
-              }}
+              onClick={handleCancelEdit}
               className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-4"
             >
               Cancel Edit
@@ -221,6 +245,13 @@ const ManageCollection = () => {
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
+                    Trending
+                  </th>{" "}
+                  {/* NEW TABLE HEADER */}
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     Image
                   </th>
                   <th
@@ -239,10 +270,14 @@ const ManageCollection = () => {
                         {collection.name}
                       </div>
                     </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                      {collection.isTrending ? "Yes" : "No"}
+                    </td>{" "}
+                    {/* NEW TABLE CELL */}
                     <td className="px-6 py-4 whitespace-nowrap">
                       {collection.imageUrl && (
                         <img
-                          src={`http://localhost:5000${collection.imageUrl}`} // Adjust base URL as needed
+                          src={`http://localhost:5000${collection.imageUrl}`}
                           alt={collection.name}
                           className="h-16 w-16 object-cover rounded-md"
                         />
