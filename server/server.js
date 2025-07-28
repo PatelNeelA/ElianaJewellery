@@ -7,7 +7,8 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const collectionRoutes = require("./routes/collectionRoutes");
 const productRoutes = require("./routes/productRoutes"); // Import product routes
-
+const blogRoutes = require("./routes/blogRoutes"); // Import blog routes
+const contactRoutes = require("./routes/contactRoutes");
 // Load environment variables
 dotenv.config();
 
@@ -29,7 +30,8 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/api/auth", authRoutes);
 app.use("/api/collections", collectionRoutes);
 app.use("/api/products", productRoutes); // Add product routes
-
+app.use("/api/blogs", blogRoutes);
+app.use("/api/contact", contactRoutes);
 // Basic route for testing
 app.get("/", (req, res) => {
   res.send("API is running...");

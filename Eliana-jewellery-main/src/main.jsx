@@ -26,6 +26,7 @@ import ManageCollection from "./Components/Admin/ManageCollection.jsx";
 import ManageBlog from "./Components/Admin/ManageBlog.jsx";
 import ManageProduct from "./Components/Admin/ManageProduct.jsx"; // Import the new component
 import ManageOrder from "./Components/Admin/ManageOrder.jsx";
+import ManageContact from "./Components/Admin/ManageContact.jsx";
 
 const router = createBrowserRouter([
   {
@@ -97,6 +98,10 @@ const router = createBrowserRouter([
       {
         path: "Orders", // Changed to plural for consistency
         element: <ManageOrder />,
+      },
+      {
+        path: "contact-messages", // New route for managing contact messages
+        element: <ManageContact />,
       },
     ],
   },

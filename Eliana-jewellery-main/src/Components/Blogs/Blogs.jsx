@@ -1,42 +1,56 @@
-import React from "react";
-import blogs1 from "/assets/images/blogs1.png";
-import blogs2 from "/assets/images/blogs2.png";
-import blogs3 from "/assets/images/blogs3.png";
-import blogs4 from "/assets/images/blogs4.png";
-import blogs5 from "/assets/images/blogs5.png";
-import image from "/assets/images/image.png";
-
-const blogData = [
-  {
-    img: blogs1,
-    title: "Vijay Gems had made deal for changing name",
-    desc: "What would be next some expert are....",
-    authorImg: blogs4,
-    authorName: "Margari john",
-    authorRole: "Designer",
-    color: "text-black",
-  },
-  {
-    img: blogs2,
-    title: "Prepare yourself for some undivided attention.",
-    desc: "Amazing new collection by eliana and....",
-    authorImg: image,
-    authorName: "Arya Stark",
-    authorRole: "news& blogs",
-    color: "text-[#13524A]",
-  },
-  {
-    img: blogs3,
-    title: "For the first time in india take home a diamond",
-    desc: "The offer of eliana store is unbelievable.....",
-    authorImg: blogs5,
-    authorName: "Mira Alber",
-    authorRole: "Crafter",
-    color: "text-black",
-  },
-];
+import React, { useState, useEffect } from "react";
+import blogService from "../../Service/blogService"; // Import blogService
 
 const Blogs = () => {
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await blogService.getAllBlogPosts();
+        setBlogPosts(data);
+      } catch (err) {
+        setError("Failed to load blog posts.");
+        console.error("Error fetching blog posts:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBlogPosts();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center mt-32">Loading Blogs...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center mt-32 text-red-500">{error}</div>;
+  }
+
+  // Display a message if no blog posts are found
+  if (blogPosts.length === 0) {
+    return (
+      <section
+        id="blogs"
+        className="w-full px-4 sm:px-8 md:px-12 lg:px-20 mt-32 text-center"
+      >
+        <h1 className="font-moglan text-[#13524A] text-center text-xl sm:text-2xl">
+          Read Our Blogs & News
+        </h1>
+        <h2 className="font-moglan text-black text-center text-3xl sm:text-4xl md:text-5xl mt-2 mb-16">
+          We're Making News
+        </h2>
+        <p className="text-gray-600 text-base sm:text-lg">
+          No blog posts available. Check back soon!
+        </p>
+      </section>
+    );
+  }
+
   return (
     <section id="blogs" className="w-full px-4 sm:px-8 md:px-12 lg:px-20 mt-32">
       <h1 className="font-moglan text-[#13524A] text-center text-xl sm:text-2xl">
@@ -47,14 +61,14 @@ const Blogs = () => {
       </h2>
 
       <div className="flex flex-wrap justify-center gap-8 mt-16">
-        {blogData.map((blog, index) => (
+        {blogPosts.map((blog, index) => (
           <div
-            key={index}
-            className="w-full sm:w-[364px] bg-[#fef5ee] border border-[#13524A] rounded-[9px] card-hover"
+            key={blog._id} // Use MongoDB _id as key
+            className="w-full sm:w-[364px] bg-[#fef5ee] border border-[#13524A] rounded-[9px] card-hover shadow-lg transition-all duration-300 transform hover:scale-[1.02]"
           >
             <img
-              src={blog.img}
-              alt={`blog${index + 1}`}
+              src={`http://localhost:5000${blog.blogImageUrl}`} // Use blogImageUrl from backend
+              alt={blog.title}
               className="w-full h-[200px] object-cover rounded-t-[9px]"
             />
             <div className="px-6 py-4">
@@ -62,16 +76,22 @@ const Blogs = () => {
                 {blog.title}
               </h3>
               <p className="font-playfair-display text-xs sm:text-sm text-black mb-3">
-                {blog.desc}
+                {blog.description} 
               </p>
               <div className="flex items-center gap-2">
                 <img
-                  src={blog.authorImg}
-                  alt={`author${index + 1}`}
-                  className="w-9 h-9 rounded-full"
+                  src={`http://localhost:5000${blog.authorImageUrl}`} // Use authorImageUrl from backend
+                  alt={blog.authorName}
+                  className="w-9 h-9 rounded-full object-cover"
                 />
                 <div>
-                  <h4 className={`text-sm font-moglan ${blog.color}`}>
+                  <h4
+                    className={`text-sm font-moglan ${
+                      blog.authorTextColor || "text-black"
+                    }`}
+                  >
+                    {" "}
+                    {/* Use dynamic color */}
                     {blog.authorName}
                   </h4>
                   <p className="text-[10px] font-moglan">{blog.authorRole}</p>

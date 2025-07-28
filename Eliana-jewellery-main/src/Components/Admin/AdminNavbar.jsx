@@ -81,6 +81,14 @@ const AdminNavbar = () => {
               Manage Product
             </Link>
           </li>
+          <li>
+            <Link
+              className="hover:text-indigo-600 transition duration-200"
+              to="/admin/contact-messages"
+            >
+              Manage Contact
+            </Link>
+          </li>
         </ul>
 
         {/* Admin Actions (Logout for Desktop) */}

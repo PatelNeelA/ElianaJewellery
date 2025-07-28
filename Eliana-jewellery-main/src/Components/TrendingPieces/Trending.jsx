@@ -1,4 +1,4 @@
-// components/Home/Trending.jsx (MODIFIED - Only show isTrending collections)
+// components/Home/Trending.jsx (MODIFIED - Adjusted width/height for image match)
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import collectionService from "../../Service/collectionService"; // Use collectionService
@@ -13,7 +13,6 @@ const Trending = () => {
       setLoading(true);
       setError(null);
       try {
-        // Fetch ONLY collections marked as trending
         const data = await collectionService.getCollections({
           isTrending: true,
         });
@@ -62,24 +61,34 @@ const Trending = () => {
       <h1 className="text-center font-normal text-4xl sm:text-[60px] md:text-[80px] leading-tight md:leading-[107px] text-[#13524a] font-moglan mb-12">
         Trending Pieces
       </h1>
-      <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-10 max-w-screen-xl mx-auto justify-items-center">
         {trendingCollections.map((collection) => (
           <Link
-            to={`/collection/${collection.name}`} // Links to the CardDetails page for this collection
+            to={`/collection/${collection.name}`}
             key={collection._id}
-            className="w-full rounded-[7px] relative overflow-hidden transition-all duration-300 transform hover:scale-105"
+            className="w-full rounded-[7px] relative overflow-hidden shadow-lg transition-all duration-300 transform hover:scale-105 group"
             style={{
-              maxWidth: "350px",
-              height: "250px",
+              // Adjusted dimensions to better match image_82cba6.png
+              // These are approximate and might need minor pixel adjustments
+              width: "100%", // Take full width of its grid column
+              maxWidth: "400px", // Increased max-width for wider appearance
+              height: "150px", // Reduced height for a more rectangular shape
             }}
           >
             <img
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover rounded-[7px] absolute inset-0 transition-opacity duration-300"
+              // Adjusted opacity slightly to match the image's subtle visibility
+              style={{ opacity: 0.6 }} // Base opacity for the image
               src={`http://localhost:5000${collection.imageUrl}`}
               alt={collection.name}
             />
-            <div className="bg-[rgba(19,82,74,0.38)] absolute inset-0 flex items-center justify-center">
-              <h1 className="font-normal text-lg md:text-[30px] text-white text-center font-playfair-display">
+            {/* Overlay Div - adjusted to match image visual */}
+            <div
+              className="absolute inset-0 flex items-center justify-center transition-all duration-300"
+              // Adjusted background color/opacity to match the image's overlay color
+              style={{ backgroundColor: "rgba(19,82,74,0.38)" }} // Darker, less transparent overlay
+            >
+              <h1 className="font-normal text-lg md:text-[30px] text-white text-center font-playfair-display whitespace-nowrap">
                 {collection.name.toUpperCase()}
               </h1>
             </div>
