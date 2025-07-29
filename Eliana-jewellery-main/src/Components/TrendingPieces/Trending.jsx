@@ -79,7 +79,7 @@ const Trending = () => {
               className="w-full h-full object-cover rounded-[7px] absolute inset-0 transition-opacity duration-300"
               // Adjusted opacity slightly to match the image's subtle visibility
               style={{ opacity: 0.6 }} // Base opacity for the image
-              src={`http://localhost:5000${collection.imageUrl}`}
+              src={`https://elianajewellery-backend.onrender.com${collection.imageUrl}`}
               alt={collection.name}
             />
             {/* Overlay Div - adjusted to match image visual */}
