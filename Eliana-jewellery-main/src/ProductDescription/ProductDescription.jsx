@@ -81,7 +81,7 @@ const ProductDescription = () => {
       <div className="flex flex-wrap -mx-2">
         <div className="w-full md:w-1/2 px-2">
           <img
-            src={`http://localhost:5000${productDetail.imageUrl}`} // Use imageUrl from backend
+            src={`https://elianajewellery-backend.onrender.com${productDetail.imageUrl}`} // Use imageUrl from backend
             alt={productDetail.name}
             className="w-full h-auto rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300"
           />
