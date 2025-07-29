@@ -168,7 +168,7 @@ const ManageCollection = () => {
             <p className="text-sm text-gray-600 mt-2">
               Current Image:{" "}
               <a
-                href={`http://localhost:5000${editingCollection.imageUrl}`}
+                href={`https://elianajewellery-backend.onrender.com${editingCollection.imageUrl}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[#13524a] hover:underline"
@@ -272,7 +272,7 @@ const ManageCollection = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       {collection.imageUrl && (
                         <img
-                          src={`http://localhost:5000${collection.imageUrl}`}
+                          src={`https://elianajewellery-backend.onrender.com${collection.imageUrl}`}
                           alt={collection.name}
                           className="h-16 w-16 object-cover rounded-md"
                         />
