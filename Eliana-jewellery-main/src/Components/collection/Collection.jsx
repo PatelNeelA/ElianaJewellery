@@ -65,7 +65,7 @@ const Collection = () => {
             >
               <img
                 className="w-full h-[309px] object-cover rounded-xl"
-                src={`http://localhost:5000${collection.imageUrl}`}
+                src={`https://elianajewellery-backend.onrender.com${collection.imageUrl}`}
                 alt={collection.name}
               />
               <div className="absolute bottom-0 left-0 w-full h-[100px] bg-[#13524a] rounded-b-xl opacity-30 group-hover:h-full group-hover:top-0 group-hover:rounded-t-lg transition-all duration-300 ease-in-out"></div>
