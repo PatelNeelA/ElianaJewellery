@@ -9,6 +9,7 @@ const collectionRoutes = require("./routes/collectionRoutes");
 const productRoutes = require("./routes/productRoutes"); // Import product routes
 const blogRoutes = require("./routes/blogRoutes"); // Import blog routes
 const contactRoutes = require("./routes/contactRoutes");
+const orderRoutes = require("./routes/orderRoutes"); // Import order routes
 // Load environment variables
 dotenv.config();
 
@@ -32,6 +33,7 @@ app.use("/api/collections", collectionRoutes);
 app.use("/api/products", productRoutes); // Add product routes
 app.use("/api/blogs", blogRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/orders", orderRoutes); // Add order routes
 // Basic route for testing
 app.get("/", (req, res) => {
   res.send("API is running...");

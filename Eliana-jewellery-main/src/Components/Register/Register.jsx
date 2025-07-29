@@ -1,7 +1,6 @@
-// Components/Register/Register.jsx
-import React, { useState } from "react"; // Removed useContext as it's not needed for auto-login
+// Components/Register/Register.jsx (UI Updated)
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import { UserProfileContext } from '../../contexts/userContext'; // No longer needed if not auto-logging in
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -9,14 +8,13 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState(""); // New state for success message
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
-  // const { setUserProfile } = useContext(UserProfileContext); // No longer needed for auto-login
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
-    setSuccessMessage(""); // Clear previous success messages
+    setError("");
+    setSuccessMessage("");
 
     if (password !== confirmPassword) {
       setError("Passwords do not match");
@@ -25,7 +23,6 @@ const Register = () => {
 
     try {
       const response = await fetch("http://localhost:5000/api/auth/register", {
-        // Your backend register endpoint
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -36,21 +33,17 @@ const Register = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        // If the backend sends a specific error message (e.g., email already exists)
         throw new Error(data.message || "Registration failed");
       }
 
-      // Registration successful: Display message and redirect to login
       setSuccessMessage(
         "Registration successful! Please log in with your new account."
       );
       console.log("User Registration successful:", data);
 
-      // --- CRITICAL CHANGE HERE ---
-      // Instead of auto-logging in, redirect to the login page after a short delay
       setTimeout(() => {
         navigate("/login");
-      }, 2000); // Redirect after 2 seconds to allow user to read success message
+      }, 2000);
     } catch (err) {
       console.error("Registration Error:", err.message);
       setError(err.message);
@@ -58,9 +51,15 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-80px)] bg-gray-100 p-4">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+    <div className="flex items-center justify-center min-h-[calc(100vh-80px)] bg-[#f3ece6] p-4">
+      {" "}
+      {/* Updated background color */}
+      <div className="bg-[#fef5ee] border border-[#13524a] rounded-lg p-8 shadow-lg w-full max-w-md">
+        {" "}
+        {/* Updated form card style */}
+        <h2 className="text-2xl font-moglan text-[#13524a] text-center mb-6">
+          {" "}
+          {/* Updated heading style */}
           Register
         </h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
@@ -71,14 +70,14 @@ const Register = () => {
           <div className="mb-4">
             <label
               htmlFor="username"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2"
             >
               Username:
             </label>
             <input
               type="text"
               id="username"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base" /* Updated input style */
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
@@ -87,14 +86,14 @@ const Register = () => {
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2" /* Updated label font */
             >
               Email:
             </label>
             <input
               type="email"
               id="email"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base" /* Updated input style */
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -103,14 +102,14 @@ const Register = () => {
           <div className="mb-4">
             <label
               htmlFor="password"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2" /* Updated label font */
             >
               Password:
             </label>
             <input
               type="password"
               id="password"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base" /* Updated input style */
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -119,14 +118,14 @@ const Register = () => {
           <div className="mb-6">
             <label
               htmlFor="confirmPassword"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2" /* Updated label font */
             >
               Confirm Password:
             </label>
             <input
               type="password"
               id="confirmPassword"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base" /* Updated input style */
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
@@ -134,14 +133,16 @@ const Register = () => {
           </div>
           <button
             type="submit"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#13524a] hover:bg-[#18544d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#13524a]" /* Updated button style */
           >
             Register
           </button>
         </form>
         <p className="text-center text-gray-600 text-sm mt-4">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-500 hover:text-blue-800">
+          <Link to="/login" className="text-[#13524a] hover:text-[#18544d]">
+            {" "}
+            {/* Updated link color */}
             Login here
           </Link>
         </p>

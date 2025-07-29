@@ -1,17 +1,24 @@
 import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import ring from "/assets/images/footer-ring.png";
-import instagram from "/assets/images/icons8-instagram-100 1.png";
-import facebook from "/assets/images/icons8-facebook-100 1.png";
-import twitter from "/assets/images/icons8-twitter-100 1.png";
-import youtube from "/assets/images/icons8-youtube-100 1.png";
 import visa from "/assets/images/visa.png";
 import mastercard from "/assets/images/mastercard.png";
 import amex from "/assets/images/amex.png";
 import discover from "/assets/images/discover.png";
 import amazon from "/assets/images/amazon.png";
 
+import { Instagram, Facebook, Linkedin, Github } from "lucide-react";
 const Footer = () => {
   const [showMessage, setShowMessage] = useState(false);
+  const location = useLocation();
+  const socialMediaLinks = {
+    instagram: "https://www.instagram.com/_neelpatell/?next=%2F", // Replace with your Instagram URL
+    linkedin: "https://www.linkedin.com/in/patel-neel-38868730a/", // Replace with your LinkedIn URL
+    facebook: " https://www.facebook.com/patel.neel.7777019", // Replace with your Facebook URL
+    github: "https://github.com/PatelNeelA", // Replace with your GitHub URL
+    twitter: "https://twitter.com/your_twitter_profile",
+    youtube: "https://www.youtube.com/your_youtube_channel", // Or your YouTube channel URL
+  };
 
   const handleSubscribe = (event) => {
     event.preventDefault();
@@ -26,6 +33,12 @@ const Footer = () => {
     setTimeout(() => {
       setShowMessage(false);
     }, 3000);
+  };
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
@@ -85,25 +98,116 @@ const Footer = () => {
           <div>
             <h3 className="text-2xl font-playFair mb-2">Eliana Jewellerys</h3>
             <p className="text-sm">Crafted with love & loyalty</p>
-            <div className="flex gap-4 mt-4">
-              <img src={instagram} alt="Instagram" className="w-6 h-6" />
-              <img src={facebook} alt="Facebook" className="w-6 h-6" />
-              <img src={twitter} alt="Twitter" className="w-6 h-6" />
-              <img src={youtube} alt="YouTube" className="w-6 h-6" />
+            <div className="flex justify-center md:justify-start gap-4 mt-4">
+              {/* Instagram */}
+              <a
+                href={socialMediaLinks.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Follow us on Instagram"
+              >
+                <Instagram className="w-6 h-6 text-white hover:scale-110 transition-transform" />
+              </a>
+              {/* Facebook */}
+              <a
+                href={socialMediaLinks.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Follow us on Facebook"
+              >
+                <Facebook className="w-6 h-6 text-white hover:scale-110 transition-transform" />
+              </a>
+
+              {/* LinkedIn */}
+              <a
+                href={socialMediaLinks.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Connect with us on LinkedIn"
+              >
+                <Linkedin className="w-6 h-6 text-white hover:scale-110 transition-transform" />
+              </a>
+              {/* GitHub */}
+              <a
+                href={socialMediaLinks.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Check our GitHub profile"
+              >
+                <Github className="w-6 h-6 text-white hover:scale-110 transition-transform" />
+              </a>
             </div>
           </div>
 
-          <div>
+          <div className="text-center md:text-left">
             <h3 className="text-2xl mb-4 font-playfair-display">Navigate</h3>
             <ul className="space-y-2 text-base">
-              <li>Home</li>
-              <li>Collection</li>
-              <li>Blogs</li>
-              <li>Contact</li>
-              <li>Cart</li>
+              <li>
+                <Link to="/home" className="hover:underline">
+                  Home
+                </Link>
+              </li>
+              <li>
+                {location.pathname === "/home" ? (
+                  <a
+                    href="#collection"
+                    className="hover:underline"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollToSection("collection");
+                    }}
+                  >
+                    Collection
+                  </a>
+                ) : (
+                  <Link to="/home#collection" className="hover:underline">
+                    Collection
+                  </Link>
+                )}
+              </li>
+              <li>
+                {location.pathname === "/home" ? (
+                  <a
+                    href="#blogs"
+                    className="hover:underline"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollToSection("blogs");
+                    }}
+                  >
+                    Blogs
+                  </a>
+                ) : (
+                  <Link to="/home#blogs" className="hover:underline">
+                    Blogs
+                  </Link>
+                )}
+              </li>
+              <li>
+                {location.pathname === "/home" ? (
+                  <a
+                    href="#contact"
+                    className="hover:underline"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      scrollToSection("contact");
+                    }}
+                  >
+                    Contact
+                  </a>
+                ) : (
+                  <Link to="/home#contact" className="hover:underline">
+                    Contact
+                  </Link>
+                )}
+              </li>
+              <li>
+                <Link to="/cart" className="hover:underline">
+                  Cart
+                </Link>
+              </li>
             </ul>
           </div>
-
           <div className="grid grid-cols-2 gap-4">
             <div>
               <h3 className="text-2xl mb-4 font-playfair-display">

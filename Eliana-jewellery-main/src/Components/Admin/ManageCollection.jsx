@@ -1,4 +1,3 @@
-// components/Admin/ManageCollection.jsx (MODIFIED)
 import React, { useState, useEffect } from "react";
 import collectionService from "../../Service/collectionService";
 
@@ -6,7 +5,7 @@ const ManageCollection = () => {
   const [collections, setCollections] = useState([]);
   const [collectionName, setCollectionName] = useState("");
   const [collectionImage, setCollectionImage] = useState(null);
-  const [isTrending, setIsTrending] = useState(false); // NEW STATE for isTrending
+  const [isTrending, setIsTrending] = useState(false);
 
   const [editingCollection, setEditingCollection] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -21,7 +20,7 @@ const ManageCollection = () => {
     setLoading(true);
     setError(null);
     try {
-      const data = await collectionService.getCollections(); // Fetches all collections
+      const data = await collectionService.getCollections();
       setCollections(data);
     } catch (err) {
       setError("Failed to fetch collections.");
@@ -51,7 +50,7 @@ const ManageCollection = () => {
 
     const formData = new FormData();
     formData.append("name", collectionName);
-    formData.append("isTrending", isTrending); // Append isTrending
+    formData.append("isTrending", isTrending);
     if (collectionImage) {
       formData.append("collectionImage", collectionImage);
     }
@@ -67,10 +66,9 @@ const ManageCollection = () => {
         const result = await collectionService.createCollection(formData);
         setSuccess(result.message);
       }
-      // Clear form
       setCollectionName("");
       setCollectionImage(null);
-      setIsTrending(false); // Reset
+      setIsTrending(false);
       setEditingCollection(null);
       e.target.reset();
       fetchCollections();
@@ -86,7 +84,7 @@ const ManageCollection = () => {
     setEditingCollection(collection);
     setCollectionName(collection.name);
     setCollectionImage(null);
-    setIsTrending(collection.isTrending || false); // Set for edit
+    setIsTrending(collection.isTrending || false);
     setError(null);
     setSuccess(null);
   };
@@ -119,16 +117,16 @@ const ManageCollection = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 md:p-8">
+    <div className="container mx-auto p-4 md:p-8 bg-[#f3ece6]">
       <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
         Manage Collections
       </h1>
 
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow-md mb-8"
+        className="bg-[#fef5ee] border border-[#13524a] rounded-lg p-6 shadow-lg mb-8"
       >
-        <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+        <h2 className="text-2xl font-moglan text-[#13524a] text-center mb-6">
           {editingCollection ? "Edit Collection" : "Add New Collection"}
         </h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -137,14 +135,14 @@ const ManageCollection = () => {
         <div className="mb-4">
           <label
             htmlFor="collectionName"
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block text-gray-700 text-sm font-moglan mb-2"
           >
             Collection Name:
           </label>
           <input
             type="text"
             id="collectionName"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base"
             value={collectionName}
             onChange={(e) => setCollectionName(e.target.value)}
             required
@@ -154,7 +152,7 @@ const ManageCollection = () => {
         <div className="mb-4">
           <label
             htmlFor="collectionImage"
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block text-gray-700 text-sm font-moglan mb-2"
           >
             Collection Image:
           </label>
@@ -173,7 +171,7 @@ const ManageCollection = () => {
                 href={`http://localhost:5000${editingCollection.imageUrl}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-500 hover:underline"
+                className="text-[#13524a] hover:underline"
               >
                 View Current Image
               </a>
@@ -183,11 +181,10 @@ const ManageCollection = () => {
           )}
         </div>
 
-        {/* NEW: Is Trending Checkbox */}
         <div className="mb-4">
           <label
             htmlFor="isTrending"
-            className="flex items-center text-gray-700 text-sm font-bold mb-2"
+            className="flex items-center text-gray-700 text-sm font-moglan mb-2"
           >
             <input
               type="checkbox"
@@ -203,7 +200,7 @@ const ManageCollection = () => {
         <div className="flex items-center justify-between">
           <button
             type="submit"
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
+            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#13524a] hover:bg-[#18544d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#13524a] disabled:opacity-50"
             disabled={loading}
           >
             {loading
@@ -216,7 +213,7 @@ const ManageCollection = () => {
             <button
               type="button"
               onClick={handleCancelEdit}
-              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-4"
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-4"
             >
               Cancel Edit
             </button>
@@ -224,8 +221,8 @@ const ManageCollection = () => {
         </div>
       </form>
 
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+      <div className="bg-[#fef5ee] border border-[#13524a] p-6 rounded-lg shadow-lg">
+        <h2 className="text-2xl font-moglan text-[#13524a] text-center mb-6">
           Existing Collections
         </h2>
         {loading && <p>Loading collections...</p>}
@@ -246,8 +243,7 @@ const ManageCollection = () => {
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
                     Trending
-                  </th>{" "}
-                  {/* NEW TABLE HEADER */}
+                  </th>
                   <th
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -272,8 +268,7 @@ const ManageCollection = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-center">
                       {collection.isTrending ? "Yes" : "No"}
-                    </td>{" "}
-                    {/* NEW TABLE CELL */}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       {collection.imageUrl && (
                         <img

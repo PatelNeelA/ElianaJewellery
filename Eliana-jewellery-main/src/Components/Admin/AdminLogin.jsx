@@ -1,4 +1,4 @@
-// Components/AdminLogin/AdminLogin.jsx
+// Components/AdminLogin/AdminLogin.jsx (UI Modified)
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserProfileContext } from "../../contexts/userContext"; // Adjust path if needed
@@ -8,17 +8,16 @@ const AdminLogin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { setUserProfile } = useContext(UserProfileContext); // Get setUserProfile from context
+  const { setUserProfile } = useContext(UserProfileContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
+    setError("");
 
     try {
       const response = await fetch(
         "http://localhost:5000/api/auth/admin/login",
         {
-          // Your backend admin login endpoint
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -33,11 +32,10 @@ const AdminLogin = () => {
         throw new Error(data.message || "Admin login failed");
       }
 
-      // Login successful: Store admin user data in context and local storage
-      setUserProfile(data); // Update context
-      localStorage.setItem("userProfile", JSON.stringify(data)); // Store in local storage
+      setUserProfile(data);
+      localStorage.setItem("userProfile", JSON.stringify(data));
       console.log("Admin Login successful:", data);
-      navigate("/admin/dashboard"); // Redirect to an admin dashboard
+      navigate("/admin/dashboard");
     } catch (err) {
       console.error("Admin Login Error:", err.message);
       setError(err.message);
@@ -45,9 +43,15 @@ const AdminLogin = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-80px)] bg-gray-100 p-4">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+    <div className="flex items-center justify-center min-h-[calc(100vh-80px)] bg-[#f3ece6] p-4">
+      {" "}
+      {/* Updated background color */}
+      <div className="bg-[#fef5ee] border border-[#13524a] rounded-lg p-8 shadow-lg w-full max-w-md">
+        {" "}
+        {/* Updated form card style */}
+        <h2 className="text-2xl font-moglan text-[#13524a] text-center mb-6">
+          {" "}
+          {/* Updated heading style */}
           Admin Login
         </h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
@@ -55,14 +59,14 @@ const AdminLogin = () => {
           <div className="mb-4">
             <label
               htmlFor="adminEmail"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2"
             >
               Email:
             </label>
             <input
               type="email"
               id="adminEmail"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base" /* Updated input style */
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -71,14 +75,14 @@ const AdminLogin = () => {
           <div className="mb-6">
             <label
               htmlFor="adminPassword"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2" /* Updated label font */
             >
               Password:
             </label>
             <input
               type="password"
               id="adminPassword"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base" /* Updated input style */
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -86,7 +90,7 @@ const AdminLogin = () => {
           </div>
           <button
             type="submit"
-            className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#13524a] hover:bg-[#18544d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#13524a]" /* Updated button style */
           >
             Login as Admin
           </button>

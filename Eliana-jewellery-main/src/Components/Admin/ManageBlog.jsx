@@ -1,6 +1,6 @@
-// components/Admin/ManageBlog.jsx
+// components/Admin/ManageBlog.jsx (UI & Responsiveness Modified)
 import React, { useState, useEffect } from "react";
-import blogService from "../../Service/blogService"; // Adjust path as needed
+import blogService from "../../Service/blogService";
 
 const ManageBlog = () => {
   const [blogPosts, setBlogPosts] = useState([]);
@@ -10,7 +10,7 @@ const ManageBlog = () => {
   const [authorName, setAuthorName] = useState("");
   const [authorRole, setAuthorRole] = useState("");
   const [authorImage, setAuthorImage] = useState(null);
-  const [authorTextColor, setAuthorTextColor] = useState("text-black"); // Default value
+  const [authorTextColor, setAuthorTextColor] = useState("text-black");
 
   const [editingBlog, setEditingBlog] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -54,8 +54,8 @@ const ManageBlog = () => {
       !description ||
       !authorName ||
       !authorRole ||
-      (!blogImage && !editingBlog) || // Blog image required for new/not editing
-      (!authorImage && !editingBlog) // Author image required for new/not editing
+      (!blogImage && !editingBlog) ||
+      (!authorImage && !editingBlog)
     ) {
       setError("Please fill in all required fields and provide both images.");
       setLoading(false);
@@ -70,26 +70,23 @@ const ManageBlog = () => {
     formData.append("authorTextColor", authorTextColor);
 
     if (blogImage) {
-      formData.append("blogImage", blogImage); // Field name must match backend Multer setup
+      formData.append("blogImage", blogImage);
     }
     if (authorImage) {
-      formData.append("authorImage", authorImage); // Field name must match backend Multer setup
+      formData.append("authorImage", authorImage);
     }
 
     try {
       if (editingBlog) {
-        // Update existing blog post
         const result = await blogService.updateBlogPost(
           editingBlog._id,
           formData
         );
         setSuccess(result.message);
       } else {
-        // Create new blog post
         const result = await blogService.createBlogPost(formData);
         setSuccess(result.message);
       }
-      // Clear form
       setTitle("");
       setDescription("");
       setBlogImage(null);
@@ -98,8 +95,8 @@ const ManageBlog = () => {
       setAuthorImage(null);
       setAuthorTextColor("text-black");
       setEditingBlog(null);
-      e.target.reset(); // Reset file inputs
-      fetchBlogPosts(); // Refresh the list
+      e.target.reset();
+      fetchBlogPosts();
     } catch (err) {
       setError(err.response?.data?.message || "An error occurred.");
       console.error("Error submitting blog post:", err);
@@ -115,8 +112,8 @@ const ManageBlog = () => {
     setAuthorName(blog.authorName);
     setAuthorRole(blog.authorRole);
     setAuthorTextColor(blog.authorTextColor || "text-black");
-    setBlogImage(null); // Clear file inputs for new upload
-    setAuthorImage(null); // Clear file inputs for new upload
+    setBlogImage(null);
+    setAuthorImage(null);
     setError(null);
     setSuccess(null);
   };
@@ -129,7 +126,7 @@ const ManageBlog = () => {
       try {
         const result = await blogService.deleteBlogPost(id);
         setSuccess(result.message);
-        fetchBlogPosts(); // Refresh the list
+        fetchBlogPosts();
       } catch (err) {
         setError(err.response?.data?.message || "Failed to delete blog post.");
         console.error("Error deleting blog post:", err);
@@ -153,32 +150,38 @@ const ManageBlog = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 md:p-8">
+    <div className="container mx-auto p-4 md:p-8 bg-[#f3ece6]">
+      {" "}
+      {/* Main container background */}
       <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
         Manage Blog Posts
       </h1>
-
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow-md mb-8"
+        className="bg-[#fef5ee] border border-[#13524a] rounded-lg p-6 shadow-lg mb-8"
       >
-        <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+        <h2 className="text-2xl font-moglan text-[#13524a] text-center mb-6">
+          {" "}
+          {/* Heading style */}
           {editingBlog ? "Edit Blog Post" : "Add New Blog Post"}
         </h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="mb-4">
             <label
               htmlFor="title"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2"
             >
+              {" "}
+              {/* Label font */}
               Blog Title:
             </label>
             <input
               type="text"
               id="title"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
@@ -188,8 +191,10 @@ const ManageBlog = () => {
           <div className="mb-4">
             <label
               htmlFor="blogImage"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2"
             >
+              {" "}
+              {/* Label font */}
               Blog Main Image:
             </label>
             <input
@@ -207,41 +212,49 @@ const ManageBlog = () => {
                   href={`http://localhost:5000${editingBlog.blogImageUrl}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
+                  className="text-[#13524a] hover:underline"
                 >
+                  {" "}
+                  {/* Link color */}
                   View Image
                 </a>
               </p>
             )}
           </div>
         </div>
+
         <div className="mb-4">
           <label
             htmlFor="description"
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="block text-gray-700 text-sm font-moglan mb-2"
           >
+            {" "}
+            {/* Label font */}
             Description:
           </label>
           <textarea
             id="description"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-24 resize-none"
+            className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base h-24 resize-none"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
           ></textarea>
         </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="mb-4">
             <label
               htmlFor="authorName"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2"
             >
+              {" "}
+              {/* Label font */}
               Author Name:
             </label>
             <input
               type="text"
               id="authorName"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base"
               value={authorName}
               onChange={(e) => setAuthorName(e.target.value)}
               required
@@ -251,14 +264,16 @@ const ManageBlog = () => {
           <div className="mb-4">
             <label
               htmlFor="authorRole"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2"
             >
+              {" "}
+              {/* Label font */}
               Author Role:
             </label>
             <input
               type="text"
               id="authorRole"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base"
               value={authorRole}
               onChange={(e) => setAuthorRole(e.target.value)}
               required
@@ -268,8 +283,10 @@ const ManageBlog = () => {
           <div className="mb-4">
             <label
               htmlFor="authorImage"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2"
             >
+              {" "}
+              {/* Label font */}
               Author Image:
             </label>
             <input
@@ -287,8 +304,10 @@ const ManageBlog = () => {
                   href={`http://localhost:5000${editingBlog.authorImageUrl}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
+                  className="text-[#13524a] hover:underline"
                 >
+                  {" "}
+                  {/* Link color */}
                   View Image
                 </a>
               </p>
@@ -298,27 +317,27 @@ const ManageBlog = () => {
           <div className="mb-4">
             <label
               htmlFor="authorTextColor"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2"
             >
+              {" "}
+              {/* Label font */}
               Author Text Color:
             </label>
             <select
               id="authorTextColor"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base"
               value={authorTextColor}
               onChange={(e) => setAuthorTextColor(e.target.value)}
             >
               <option value="text-black">Black</option>
               <option value="text-[#13524A]">Teal</option>
-              {/* Add other specific colors you might use */}
             </select>
           </div>
-        </div>{" "}
-        {/* End of grid */}
+        </div>
         <div className="flex items-center justify-between mt-6">
           <button
             type="submit"
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
+            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#13524a] hover:bg-[#18544d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#13524a] disabled:opacity-50"
             disabled={loading}
           >
             {loading
@@ -331,16 +350,19 @@ const ManageBlog = () => {
             <button
               type="button"
               onClick={handleCancelEdit}
-              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-4"
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-4"
             >
               Cancel Edit
             </button>
           )}
         </div>
       </form>
-
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+      <div className="bg-[#fef5ee] border border-[#13524a] p-6 rounded-lg shadow-lg">
+        {" "}
+        {/* Table card style */}
+        <h2 className="text-2xl font-moglan text-[#13524a] text-center mb-6">
+          {" "}
+          {/* Heading style */}
           Existing Blog Posts
         </h2>
         {loading && <p>Loading blog posts...</p>}
@@ -414,7 +436,7 @@ const ManageBlog = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <button
                         onClick={() => handleEdit(blog)}
-                        className="text-indigo-600 hover:text-indigo-900 mr-4"
+                        className="text-[#13524a] hover:text-[#18544d] mr-4" /* Link-like button color */
                       >
                         Edit
                       </button>

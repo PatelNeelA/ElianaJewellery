@@ -2,11 +2,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { UserProfileContext } from "../../contexts/userContext";
-
-// Mocking react-redux (keep this if you're still mocking Redux, otherwise remove)
-const useSelector = (selector) => {
-  return selector({ cart: { items: [{ id: 1 }, { id: 2 }] } });
-};
+import { useSelector } from "react-redux"; // Correct import
 
 // Import Lucide React icons
 import { Search, Heart, ShoppingBag, User } from "lucide-react";
@@ -22,32 +18,27 @@ const Navbar = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
-    // This effect should ideally only run if userProfile from context is null
-    // or if a stored user exists that needs to be loaded into context.
     const storedUser = JSON.parse(localStorage.getItem("userProfile"));
-    if (storedUser && (!userProfile || userProfile.role === "guest")) {
-      // Only set if stored and not already in context, or if current is guest
-      setUserProfile(storedUser);
-    } else if (!storedUser && userProfile && userProfile.role !== "guest") {
-      // If no stored user, but a non-guest user in context (e.g. after logout in another tab)
-      // This case might need careful handling depending on your app's behavior
-      // For now, let's reset to guest if localStorage is truly empty
-      setUserProfile({
-        name: "Guest User",
-        email: "guest@example.com",
-        photoURL: "",
-        role: "guest",
-      });
-    } else if (!storedUser && !userProfile) {
-      // If nothing stored and nothing in context, set guest
-      setUserProfile({
-        name: "Guest User",
-        email: "guest@example.com",
-        photoURL: "",
-        role: "guest",
-      });
+
+    if (!storedUser) {
+      if (!userProfile || userProfile.role !== "guest") {
+        setUserProfile({
+          name: "Guest User",
+          email: "guest@example.com",
+          photoURL: "",
+          role: "guest",
+        });
+      }
+    } else {
+      if (
+        !userProfile ||
+        userProfile.email !== storedUser.email ||
+        userProfile.role !== storedUser.role
+      ) {
+        setUserProfile(storedUser);
+      }
     }
-  }, [userProfile, setUserProfile]); // Added userProfile to dependency array for re-evaluation
+  }, [setUserProfile, userProfile]);
 
   const toggleProfile = () => {
     setShowProfile(!showProfile);
@@ -61,20 +52,21 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("userProfile");
-    localStorage.removeItem("adminToken"); // Clear admin token too if it was set
+    localStorage.removeItem("adminToken");
     setUserProfile({
-      // Explicitly set to guest after logout
       name: "Guest User",
       email: "guest@example.com",
       photoURL: "",
       role: "guest",
     });
-    navigate("/login"); // Redirect to generic login page
+    navigate("/login");
     setShowProfile(false);
   };
 
   return (
-    <nav className="bg-white shadow-md p-4 sticky top-0 z-40">
+    <nav className="bg-[#f3ece6] shadow-md p-4 sticky top-0 z-40">
+      {" "}
+      {/* Changed background color here */}
       <div className="container mx-auto flex justify-between items-center flex-wrap">
         {/* Hamburger Menu Icon (Mobile Only) */}
         <button
@@ -97,10 +89,13 @@ const Navbar = () => {
           </svg>
         </button>
 
-        {/* Logo */}
-        <div className="text-[#15534b] font-normal text-4xl sm:text-5xl md:text-6xl leading-tight font-['Moglan'] mx-auto md:mx-0">
+        {/* Logo - Now a clickable Link */}
+        <Link
+          to="/home"
+          className="text-[#15534b] font-normal text-4xl sm:text-5xl md:text-6xl leading-tight font-['Moglan'] mx-auto md:mx-0 cursor-pointer"
+        >
           <h1>Eliana</h1>
-        </div>
+        </Link>
 
         {/* Desktop Navigation Links */}
         <ul className="hidden md:flex flex-grow justify-center gap-8 list-none text-lg font-medium text-gray-700">
@@ -159,7 +154,6 @@ const Navbar = () => {
 
         {/* Icons Section */}
         <div className="flex items-center gap-6 md:gap-8 relative ml-auto md:ml-0">
-          <Search className="w-6 h-6 sm:w-7 sm:h-7 hover:scale-110 transition-transform cursor-pointer text-gray-700" />
           <Link to="/favorites">
             <Heart className="w-6 h-6 sm:w-7 sm:h-7 hover:scale-110 transition-transform text-gray-700" />
           </Link>
@@ -188,7 +182,6 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-
       {/* Mobile Menu Overlay */}
       {showMobileMenu && (
         <div className="fixed inset-0 bg-white bg-opacity-95 z-40 flex flex-col items-center justify-center md:hidden">
@@ -350,7 +343,6 @@ const Navbar = () => {
           </ul>
         </div>
       )}
-
       {/* Profile Sidebar */}
       {showProfile && (
         <div className="fixed top-0 right-0 h-full w-64 bg-[#fef5ee] shadow-lg p-4 z-50 transform transition-transform duration-300 ease-in-out">

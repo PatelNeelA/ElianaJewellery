@@ -1,10 +1,62 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import collectionService from "../../Service/collectionService"; // Import collectionService
+
 import prpose from "/assets/images/prpose.png";
 import propose1 from "/assets/images/propose1.png";
 import platinumRing from "/assets/images/platinum ring 1.png";
-import { Link } from "react-router-dom";
 
 const Engagement = () => {
+  const [engagementCollection, setEngagementCollection] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchEngagementCollection = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        // Fetch collections with purposeTag 'engagement'
+        const collections = await collectionService.getCollections({
+          purposeTag: "engagement",
+        });
+
+        if (collections.length > 0) {
+          // Assuming you want the first one if multiple are tagged 'engagement'
+          setEngagementCollection(collections[0]);
+        } else {
+          setError(
+            "No engagement collection found. Please create one in admin with purpose 'Engagement Section'."
+          );
+        }
+      } catch (err) {
+        setError("Failed to load engagement collection details.");
+        console.error("Error fetching engagement collection:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEngagementCollection();
+  }, []);
+
+  // Display loading, error, or fallback if no collection is found
+  if (loading) {
+    return (
+      <div className="w-full px-4 sm:px-6 md:px-12 pt-28 sm:pt-36 lg:pt-56 text-center">
+        Loading Engagement section...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full px-4 sm:px-6 md:px-12 pt-28 sm:pt-36 lg:pt-56 text-center text-red-500">
+        {error}
+      </div>
+    );
+  }
+
   return (
     <div className="w-full px-4 sm:px-6 md:px-12 pt-28 sm:pt-36 lg:pt-56">
       <div className="relative flex flex-col lg:flex-row items-center gap-10">
@@ -39,11 +91,23 @@ const Engagement = () => {
             passion, each piece in our collection embodies timeless beauty and
             exceptional craftsmanship.
           </p>
-          <Link to="/collection/couplering">
-            <button className="h-[50px] sm:h-[54px] w-[160px] sm:w-[187px] text-sm sm:text-[18px] md:text-[20px] mt-8 font-moglan bg-[#fef5ee] border border-[#13524a] rounded-md text-[#13524a] hover:bg-[#13524a] hover:text-white transition-all duration-300">
-              Shop Now
+          {engagementCollection ? (
+            <Link to={`/collection/${engagementCollection.name}`}>
+              {" "}
+              {/* Dynamic Link */}
+              <button className="h-[50px] sm:h-[54px] w-[160px] sm:w-[187px] text-sm sm:text-[18px] md:text-[20px] mt-8 font-moglan bg-[#fef5ee] border border-[#13524a] rounded-md text-[#13524a] hover:bg-[#13524a] hover:text-white transition-all duration-300">
+                Shop Now
+              </button>
+            </Link>
+          ) : (
+            // Fallback button if no engagement collection is found
+            <button
+              className="h-[50px] sm:h-[54px] w-[160px] sm:w-[187px] text-sm sm:text-[18px] md:text-[20px] mt-8 font-moglan bg-gray-300 border border-gray-500 rounded-md text-gray-700 cursor-not-allowed"
+              disabled
+            >
+              Shop Now (Unavailable)
             </button>
-          </Link>
+          )}
         </div>
       </div>
     </div>

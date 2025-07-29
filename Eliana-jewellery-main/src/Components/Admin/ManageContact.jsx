@@ -1,6 +1,5 @@
-// components/Admin/ManageContact.jsx
 import React, { useState, useEffect } from "react";
-import contactService from "../../Service/contactService"; // Adjust path as needed
+import contactService from "../../Service/contactService";
 
 const ManageContact = () => {
   const [contactMessages, setContactMessages] = useState([]);
@@ -34,7 +33,7 @@ const ManageContact = () => {
       try {
         const result = await contactService.deleteMessage(id);
         setSuccess(result.message);
-        fetchContactMessages(); // Refresh the list
+        fetchContactMessages();
       } catch (err) {
         setError(err.response?.data?.message || "Failed to delete message.");
         console.error("Error deleting message:", err);
@@ -45,7 +44,7 @@ const ManageContact = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 md:p-8">
+    <div className="container mx-auto p-4 md:p-8 bg-[#f3ece6]">
       <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
         Manage Contact Messages
       </h1>
@@ -53,8 +52,8 @@ const ManageContact = () => {
       {error && <p className="text-red-500 mb-4">{error}</p>}
       {success && <p className="text-green-500 mb-4">{success}</p>}
 
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+      <div className="bg-[#fef5ee] border border-[#13524a] p-6 rounded-lg shadow-lg">
+        <h2 className="text-2xl font-moglan text-[#13524a] text-center mb-6">
           All Messages
         </h2>
         {loading && <p>Loading messages...</p>}
@@ -122,7 +121,6 @@ const ManageContact = () => {
                     </td>
                     <td className="px-6 py-4 max-w-xs overflow-hidden text-ellipsis">
                       {" "}
-                      {/* Added text-ellipsis for long messages */}
                       <div className="text-sm text-gray-900">{msg.message}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

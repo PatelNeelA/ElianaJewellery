@@ -1,11 +1,10 @@
-// components/Admin/ManageProduct.jsx (MODIFIED - "Select Collection" dropdown now shows ALL collections)
 import React, { useState, useEffect } from "react";
 import productService from "../../Service/productService";
 import collectionService from "../../Service/collectionService";
 
 const ManageProduct = () => {
   const [products, setProducts] = useState([]);
-  const [collections, setCollections] = useState([]); // Will hold ALL collections
+  const [collections, setCollections] = useState([]);
   const [productName, setProductName] = useState("");
   const [productDetails, setProductDetails] = useState("");
   const [price, setPrice] = useState("");
@@ -22,7 +21,7 @@ const ManageProduct = () => {
 
   useEffect(() => {
     fetchProducts();
-    fetchCollections(); // This will now fetch ALL collections
+    fetchCollections();
   }, []);
 
   const fetchProducts = async () => {
@@ -41,8 +40,7 @@ const ManageProduct = () => {
 
   const fetchCollections = async () => {
     try {
-      // MODIFIED: Fetch ALL collections, do not exclude trending ones
-      const data = await collectionService.getCollections({}); // Pass an empty object to get all
+      const data = await collectionService.getCollections({});
       setCollections(data);
     } catch (err) {
       console.error("Error fetching collections for dropdown:", err);
@@ -166,16 +164,19 @@ const ManageProduct = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 md:p-8">
+    <div className="container mx-auto p-4 md:p-8 bg-[#f3ece6]">
+      {" "}
+      {/* Main container background */}
       <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
         Manage Products
       </h1>
-
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-lg shadow-md mb-8"
+        className="bg-[#fef5ee] border border-[#13524a] rounded-lg p-6 shadow-lg mb-8"
       >
-        <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+        <h2 className="text-2xl font-moglan text-[#13524a] text-center mb-6">
+          {" "}
+          {/* Heading style */}
           {editingProduct ? "Edit Product" : "Add New Product"}
         </h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -185,14 +186,14 @@ const ManageProduct = () => {
           <div className="mb-4">
             <label
               htmlFor="productName"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2"
             >
               Product Name:
             </label>
             <input
               type="text"
               id="productName"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base"
               value={productName}
               onChange={(e) => setProductName(e.target.value)}
               required
@@ -202,13 +203,13 @@ const ManageProduct = () => {
           <div className="mb-4">
             <label
               htmlFor="collectionSelect"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2"
             >
               Select Collection:
             </label>
             <select
               id="collectionSelect"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base"
               value={selectedCollection}
               onChange={(e) => setSelectedCollection(e.target.value)}
               required
@@ -216,8 +217,7 @@ const ManageProduct = () => {
               <option value="">-- Select a Collection --</option>
               {collections.map((col) => (
                 <option key={col._id} value={col._id}>
-                  {col.name} {col.isTrending ? "(Trending)" : ""}{" "}
-                  {/* Added "(Trending)" label */}
+                  {col.name} {col.isTrending ? "(Trending)" : ""}
                 </option>
               ))}
             </select>
@@ -226,13 +226,13 @@ const ManageProduct = () => {
           <div className="mb-4">
             <label
               htmlFor="productDetails"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2"
             >
               Product Details:
             </label>
             <textarea
               id="productDetails"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline h-24 resize-none"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base h-24 resize-none"
               value={productDetails}
               onChange={(e) => setProductDetails(e.target.value)}
               required
@@ -242,14 +242,14 @@ const ManageProduct = () => {
           <div className="mb-4">
             <label
               htmlFor="price"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2"
             >
               Price (₹):
             </label>
             <input
               type="number"
               id="price"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               required
@@ -260,13 +260,13 @@ const ManageProduct = () => {
           <div className="mb-4">
             <label
               htmlFor="gender"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2"
             >
               Gender:
             </label>
             <select
               id="gender"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base"
               value={gender}
               onChange={(e) => setGender(e.target.value)}
               required
@@ -282,14 +282,14 @@ const ManageProduct = () => {
           <div className="mb-4">
             <label
               htmlFor="occasion"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2"
             >
               Occasion:
             </label>
             <input
               type="text"
               id="occasion"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base"
               value={occasion}
               onChange={(e) => setOccasion(e.target.value)}
               required
@@ -299,14 +299,14 @@ const ManageProduct = () => {
           <div className="mb-4">
             <label
               htmlFor="materialColor"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2"
             >
               Material Color:
             </label>
             <input
               type="text"
               id="materialColor"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base"
               value={materialColor}
               onChange={(e) => setMaterialColor(e.target.value)}
               required
@@ -316,7 +316,7 @@ const ManageProduct = () => {
           <div className="mb-4">
             <label
               htmlFor="productImage"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2"
             >
               Product Image:
             </label>
@@ -326,7 +326,7 @@ const ManageProduct = () => {
               className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               onChange={handleFileChange}
               accept="image/*"
-              required={!editingProduct} // Required only if not editing
+              required={!editingProduct}
             />
             {editingProduct && editingProduct.imageUrl && (
               <p className="text-sm text-gray-600 mt-2">
@@ -335,7 +335,7 @@ const ManageProduct = () => {
                   href={`http://localhost:5000${editingProduct.imageUrl}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
+                  className="text-[#13524a] hover:underline"
                 >
                   View Current Image
                 </a>
@@ -348,7 +348,7 @@ const ManageProduct = () => {
         <div className="flex items-center justify-between mt-6">
           <button
             type="submit"
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline disabled:opacity-50"
+            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#13524a] hover:bg-[#18544d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#13524a] disabled:opacity-50"
             disabled={loading}
           >
             {loading
@@ -361,16 +361,19 @@ const ManageProduct = () => {
             <button
               type="button"
               onClick={handleCancelEdit}
-              className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-4"
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ml-4"
             >
               Cancel Edit
             </button>
           )}
         </div>
       </form>
-
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+      <div className="bg-[#fef5ee] border border-[#13524a] p-6 rounded-lg shadow-lg">
+        {" "}
+        {/* Table card style */}
+        <h2 className="text-2xl font-moglan text-[#13524a] text-center mb-6">
+          {" "}
+          {/* Heading style */}
           Existing Products
         </h2>
         {loading && <p>Loading products...</p>}
@@ -442,7 +445,7 @@ const ManageProduct = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       <button
                         onClick={() => handleEdit(product)}
-                        className="text-indigo-600 hover:text-indigo-900 mr-4"
+                        className="text-[#13524a] hover:text-[#18544d] mr-4" /* Link-like button color */
                       >
                         Edit
                       </button>

@@ -208,12 +208,10 @@ exports.updateProduct = (req, res) => {
         runValidators: true,
       }).populate("collection", "name");
 
-      res
-        .status(200)
-        .json({
-          message: "Product updated successfully",
-          product: updatedProduct,
-        });
+      res.status(200).json({
+        message: "Product updated successfully",
+        product: updatedProduct,
+      });
     } catch (error) {
       if (req.file) fs.unlinkSync(req.file.path);
       res.status(500).json({ message: "Server error", error: error.message });

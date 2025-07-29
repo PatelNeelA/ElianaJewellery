@@ -1,22 +1,21 @@
-// Components/Login/Login.jsx (Remains the same as previously provided)
+// Components/Login/Login.jsx (UI Updated)
 import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserProfileContext } from "../../contexts/userContext"; // Adjust path if needed
+import { UserProfileContext } from "../../contexts/userContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-  const { setUserProfile } = useContext(UserProfileContext); // Get setUserProfile from context
+  const { setUserProfile } = useContext(UserProfileContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
+    setError("");
 
     try {
       const response = await fetch("http://localhost:5000/api/auth/login", {
-        // Your backend login endpoint
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,11 +29,10 @@ const Login = () => {
         throw new Error(data.message || "Login failed");
       }
 
-      // Login successful: Store user data in context and local storage
-      setUserProfile(data); // Update context
-      localStorage.setItem("userProfile", JSON.stringify(data)); // Store in local storage
+      setUserProfile(data);
+      localStorage.setItem("userProfile", JSON.stringify(data));
       console.log("User Login successful:", data);
-      navigate("/home"); // Redirect to home or user dashboard
+      navigate("/home");
     } catch (err) {
       console.error("Login Error:", err.message);
       setError(err.message);
@@ -42,9 +40,15 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-80px)] bg-gray-100 p-4">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+    <div className="flex items-center justify-center min-h-[calc(100vh-80px)] bg-[#f3ece6] p-4">
+      {" "}
+      {/* Updated background color */}
+      <div className="bg-[#fef5ee] border border-[#13524a] rounded-lg p-8 shadow-lg w-full max-w-md">
+        {" "}
+        {/* Updated form card style */}
+        <h2 className="text-2xl font-moglan text-[#13524a] text-center mb-6">
+          {" "}
+          {/* Updated heading style */}
           User Login
         </h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
@@ -52,14 +56,14 @@ const Login = () => {
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2"
             >
               Email:
             </label>
             <input
               type="email"
               id="email"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base" /* Updated input style */
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -68,14 +72,14 @@ const Login = () => {
           <div className="mb-6">
             <label
               htmlFor="password"
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-moglan mb-2" /* Updated label font */
             >
               Password:
             </label>
             <input
               type="password"
               id="password"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="mt-1 block w-full p-2 border rounded-md shadow-sm focus:ring-[#13524a] focus:border-[#13524a] text-sm md:text-base" /* Updated input style */
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -83,14 +87,16 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#13524a] hover:bg-[#18544d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#13524a]" /* Updated button style */
           >
             Login
           </button>
         </form>
         <p className="text-center text-gray-600 text-sm mt-4">
           Don't have an account?{" "}
-          <Link to="/register" className="text-blue-500 hover:text-blue-800">
+          <Link to="/register" className="text-[#13524a] hover:text-[#18544d]">
+            {" "}
+            {/* Updated link color */}
             Register here
           </Link>
         </p>

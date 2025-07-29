@@ -1,7 +1,8 @@
 import React from "react";
+import ManageContact from "./ManageContact";
 
 const AdminDashboard = () => {
-  return <div>welcome to admin dashboard</div>;
+  return <ManageContact></ManageContact>;
 };
 
 export default AdminDashboard;
