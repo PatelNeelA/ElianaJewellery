@@ -1,7 +1,7 @@
 // Service/orderService.js
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/orders"; // Adjust if your backend URL changes
+const API_URL = "https://elianajewellery-backend.onrender.com/api/orders"; // Adjust if your backend URL changes
 
 const orderService = {
   createOrder: async (orderData) => {
