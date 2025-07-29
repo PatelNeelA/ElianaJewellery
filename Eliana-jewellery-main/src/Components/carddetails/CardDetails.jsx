@@ -213,7 +213,7 @@ const CardDetails = () => {
               {/* Updated Link to new product route */}
               <img
                 className="w-full h-[200px] object-cover rounded-t-xl"
-                src={`http://localhost:5000${productItem.imageUrl}`} // Use imageUrl from backend
+                src={`https://elianajewellery-backend.onrender.com${productItem.imageUrl}`} // Use imageUrl from backend
                 alt={productItem.name}
               />
             </Link>
