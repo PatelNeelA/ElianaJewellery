@@ -182,7 +182,7 @@ const Cart = () => {
             >
               <div className="flex items-center w-full sm:w-2/3">
                 <img
-                  src={`http://localhost:5000${item.imageUrl}`}
+                  src={`https://elianajewellery-backend.onrender.com${item.imageUrl}`}
                   alt={item.name}
                   className="w-16 h-16 sm:w-20 sm:h-20 rounded-md object-cover mr-4"
                 />
