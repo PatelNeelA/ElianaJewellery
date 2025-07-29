@@ -36,7 +36,7 @@ const FavoritesList = () => {
               <div className="w-full h-48 sm:h-56 md:h-64 lg:h-72">
                 <img
                   className="object-cover w-full h-full"
-                  src={`http://localhost:5000${favorite.imageUrl}`} // Changed src from favorite.image to favorite.imageUrl and added base URL
+                  src={`https://elianajewellery-backend.onrender.com${favorite.imageUrl}`} // Changed src from favorite.image to favorite.imageUrl and added base URL
                   alt={favorite.name}
                 />
               </div>
