@@ -332,7 +332,7 @@ const ManageProduct = () => {
               <p className="text-sm text-gray-600 mt-2">
                 Current Image:{" "}
                 <a
-                  href={`http://localhost:5000${editingProduct.imageUrl}`}
+                  href={`https://elianajewellery-backend.onrender.com${editingProduct.imageUrl}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#13524a] hover:underline"
@@ -436,7 +436,7 @@ const ManageProduct = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       {product.imageUrl && (
                         <img
-                          src={`http://localhost:5000${product.imageUrl}`}
+                          src={`https://elianajewellery-backend.onrender.com${product.imageUrl}`}
                           alt={product.name}
                           className="h-16 w-16 object-cover rounded-md"
                         />
