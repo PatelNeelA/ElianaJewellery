@@ -1,7 +1,7 @@
 // Service/blogService.js
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/blogs"; // Adjust if your backend URL changes
+const API_URL = "https://elianajewellery-backend.onrender.com/api/blogs"; // Adjust if your backend URL changes
 
 const blogService = {
   createBlogPost: async (blogData) => {
