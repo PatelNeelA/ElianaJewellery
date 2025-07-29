@@ -1,7 +1,7 @@
 // Service/contactService.js
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/contact"; // Adjust if your backend URL changes
+const API_URL = "https://elianajewellery-backend.onrender.com/api/contact"; // Adjust if your backend URL changes
 
 const contactService = {
   submitMessage: async (messageData) => {
