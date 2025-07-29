@@ -1,7 +1,7 @@
 // Service/collectionService.js (MODIFIED - Pass excludeTrending param)
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/collections";
+const API_URL = "https://elianajewellery-backend.onrender.com/api/collections";
 
 const collectionService = {
   createCollection: async (collectionData) => {
