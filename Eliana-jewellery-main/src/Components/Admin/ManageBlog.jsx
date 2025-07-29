@@ -209,7 +209,7 @@ const ManageBlog = () => {
               <p className="text-sm text-gray-600 mt-2">
                 Current:{" "}
                 <a
-                  href={`http://localhost:5000${editingBlog.blogImageUrl}`}
+                  href={`https://elianajewellery-backend.onrender.com${editingBlog.blogImageUrl}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#13524a] hover:underline"
@@ -301,7 +301,7 @@ const ManageBlog = () => {
               <p className="text-sm text-gray-600 mt-2">
                 Current:{" "}
                 <a
-                  href={`http://localhost:5000${editingBlog.authorImageUrl}`}
+                  href={`https://elianajewellery-backend.onrender.com${editingBlog.authorImageUrl}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-[#13524a] hover:underline"
@@ -418,7 +418,7 @@ const ManageBlog = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       {blog.blogImageUrl && (
                         <img
-                          src={`http://localhost:5000${blog.blogImageUrl}`}
+                          src={`https://elianajewellery-backend.onrender.com${blog.blogImageUrl}`}
                           alt="Blog"
                           className="h-16 w-16 object-cover rounded-md"
                         />
@@ -427,7 +427,7 @@ const ManageBlog = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       {blog.authorImageUrl && (
                         <img
-                          src={`http://localhost:5000${blog.authorImageUrl}`}
+                          src={`https://elianajewellery-backend.onrender.com${blog.authorImageUrl}`}
                           alt="Author"
                           className="h-16 w-16 object-cover rounded-full"
                         />
