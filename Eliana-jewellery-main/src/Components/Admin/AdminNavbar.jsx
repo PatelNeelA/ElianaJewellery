@@ -133,44 +133,55 @@ const AdminNavbar = () => {
               />
             </svg>
           </button>
-          <ul className="flex flex-col gap-6 text-2xl font-semibold text-gray-800">
-            <li>
-              <Link
-                className="hover:text-indigo-600 transition duration-200"
-                to="/admin/dashboard"
-                onClick={toggleMobileMenu} // Close menu on click
-              >
-                Dashboard
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="hover:text-indigo-600 transition duration-200"
-                to="/admin/collection"
-                onClick={toggleMobileMenu} // Close menu on click
-              >
-                Manage Collection
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="hover:text-indigo-600 transition duration-200"
-                to="/admin/blog"
-                onClick={toggleMobileMenu} // Close menu on click
-              >
-                Manage Blog
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="hover:text-indigo-600 transition duration-200"
-                to="/admin/orders"
-                onClick={toggleMobileMenu} // Close menu on click
-              >
-                Manage Orders
-              </Link>
-            </li>
-            {/* Logout button in mobile menu */}
+         <ul className="hidden md:flex flex-grow justify-center gap-6 md:gap-8 list-none text-lg font-medium text-gray-700">
+          <li>
+            <Link
+              className="hover:text-indigo-600 transition duration-200"
+              to="/admin/dashboard"
+            >
+              Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="hover:text-indigo-600 transition duration-200"
+              to="/admin/collection"
+            >
+              Manage Collection
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="hover:text-indigo-600 transition duration-200"
+              to="/admin/blog"
+            >
+              Manage Blog
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="hover:text-indigo-600 transition duration-200"
+              to="/admin/products"
+            >
+              Manage Product
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="hover:text-indigo-600 transition duration-200"
+              to="/admin/contact-messages"
+            >
+              Manage Contact
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="hover:text-indigo-600 transition duration-200"
+              to="/admin/Orders"
+            >
+              Manage Order
+            </Link>
+          </li>
             <li>
               <button
                 onClick={() => {
