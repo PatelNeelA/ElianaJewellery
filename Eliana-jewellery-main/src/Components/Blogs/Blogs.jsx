@@ -67,7 +67,7 @@ const Blogs = () => {
             className="w-full sm:w-[364px] bg-[#fef5ee] border border-[#13524A] rounded-[9px] card-hover shadow-lg transition-all duration-300 transform hover:scale-[1.02]"
           >
             <img
-              src={`http://localhost:5000${blog.blogImageUrl}`} // Use blogImageUrl from backend
+              src={`https://elianajewellery-backend.onrender.com${blog.blogImageUrl}`} // Use blogImageUrl from backend
               alt={blog.title}
               className="w-full h-[200px] object-cover rounded-t-[9px]"
             />
@@ -80,7 +80,7 @@ const Blogs = () => {
               </p>
               <div className="flex items-center gap-2">
                 <img
-                  src={`http://localhost:5000${blog.authorImageUrl}`} // Use authorImageUrl from backend
+                  src={`https://elianajewellery-backend.onrender.com${blog.authorImageUrl}`} // Use authorImageUrl from backend
                   alt={blog.authorName}
                   className="w-9 h-9 rounded-full object-cover"
                 />
