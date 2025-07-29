@@ -16,7 +16,7 @@ const AdminLogin = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/auth/admin/login",
+        "https://elianajewellery-backend.onrender.com/api/auth/admin/login",
         {
           method: "POST",
           headers: {
