@@ -15,7 +15,7 @@ const orderRoutes = require("./routes/orderRoutes");
 dotenv.config();
 
 // --- Hardcoded Frontend URL for CORS (as per your previous request) ---
-const allowedOrigin = "http://localhost:5173"; // Or an array if multiple: ['http://localhost:5173', 'https://www.yourdomain.com']
+const allowedOrigin = "https://elianajewellery-frontend.onrender.com"; // Or an array if multiple: ['http://localhost:5173', 'https://www.yourdomain.com']
 // --- END Hardcoded Frontend URL ---
 
 // Connect to MongoDB
